@@ -8,7 +8,7 @@ from PIL import Image
 
 SITE = Path(__file__).resolve().parent.parent
 SRC = Path.home() / "WORK/personal website/assets"
-PRIVATE_MAP = Path.home() / "dularii/overnight/2026-11-20/portfolio/media_source_map.json"
+PRIVATE_MAP = Path(__file__).with_name("media_source_map.json")   # kept out of git (.gitignore)
 
 # brand word in the file name -> niche shown on the site (no brand names in site data)
 NICHE = {"FITFLEX": "apparel", "CLASSICFIT": "apparel", "SWEATSET": "apparel", "BATCH": "apparel",
