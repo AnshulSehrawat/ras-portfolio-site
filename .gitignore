@@ -1,3 +1,4 @@
 .DS_Store
 *.bak*
 tools/media_source_map.json
+HANDOFF.md
