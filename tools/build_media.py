@@ -1,6 +1,6 @@
 # Builds web-sized media from the owner's assets folder.
 # Run: python3 tools/build_media.py   (from the site folder; needs Pillow)
-# Writes media/ads, media/archive, media/art and js/content/media.js.
+# Writes media/statics, media/archive, media/art and js/content/media.js.
 # The private source map (which file became which slug) goes next to the overnight report, not into the site.
 import json, os, re, sys
 from pathlib import Path
@@ -65,8 +65,8 @@ def main():
         slug = f"b{i:02d}"
         im = Image.open(best_dir / n).convert("RGB")
         w, h = im.size
-        save(im, SITE / f"media/ads/{slug}-s.webp", 560)
-        sz = save(im, SITE / f"media/ads/{slug}.webp", 1200, 82)
+        save(im, SITE / f"media/statics/{slug}-s.webp", 560)
+        sz = save(im, SITE / f"media/statics/{slug}.webp", 1200, 82)
         data["best"].append({"id": slug, "w": sz[0], "h": sz[1], "fmt": fmt_of(w, h),
                              "niche": niche_of(n), "concept": concept_of(n)})
         private[slug] = f"best/{n}"

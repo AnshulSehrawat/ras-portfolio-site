@@ -16,3 +16,5 @@ Run it:
 - `js/content/previews.js` + `media/**/*.avif` — `python3 tools/build_previews.py` after any media change: AVIF copies
   and a tiny blurred preview + tone per photo. `js/core/imgload.js` shows the preview under every image until the photo
   is in, starts lazy images 1600px early and fetches the rest when the page is idle, so no image is ever an empty box.
+
+Note: ad images live in `media/statics/`, never a folder named "ads" - ad blockers block any URL with `/ads/` in it.
