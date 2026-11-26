@@ -55,6 +55,8 @@
 }
 .p-hello .h-g { display: inline-block; font-stretch: 125%; }
 .p-hello .h-g.is-img {
+  /* ink under the photo: if the photo is slow or doesn't paint, the letter still shows (owner 2026-11-26: the E was missing) */
+  background-color: var(--ink);
   background-size: cover; background-position: center;
   -webkit-background-clip: text; background-clip: text;
   filter: contrast(1.15) saturate(1.2);
