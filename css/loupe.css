@@ -1,0 +1,119 @@
+/* loupe — i care about tiny details to a slightly silly degree. a red poster with a loupe and small print. */
+.p-loupe {
+  --thread: #F2EDE1;
+  position: relative; height: 100vh; height: 100svh; min-height: 620px; overflow: hidden;
+  background: var(--red) url(../media/tex/red.webp) 0 0 / 512px;
+  color: var(--paper);
+  -webkit-user-select: none; user-select: none;
+}
+.p-loupe .lp-stage {
+  position: absolute; inset: 0;
+  background: var(--red) url(../media/tex/red.webp) 0 0 / 512px;
+}
+.p-loupe .lp-stage.is-mag { transform-origin: 0 0; }
+
+/* 12 columns + their numbers */
+.p-loupe .lp-grid {
+  position: absolute; top: 0; bottom: 0; left: var(--ml); right: var(--mr);
+  display: grid; grid-template-columns: repeat(12, 1fr); column-gap: 16px;
+}
+.p-loupe .lp-grid i { border-left: 1px solid rgba(242,237,225,.15); border-right: 1px solid rgba(242,237,225,.15); position: relative; }
+.p-loupe .lp-grid span {
+  position: absolute; left: 4px; top: 66px;
+  font: 7px/1 var(--f-mono); letter-spacing: .08em; color: rgba(242,237,225,.6);
+}
+
+/* the type */
+.p-loupe .lp-type {
+  position: absolute; left: var(--ml); margin: 0;
+  font-family: var(--f-display); font-weight: 900; font-stretch: 75%;
+  line-height: .84; letter-spacing: -.008em; color: var(--paper);
+}
+.p-loupe .lp-line { display: block; white-space: nowrap; }
+.p-loupe .lp-bl { display: inline-block; width: 0; height: 0; vertical-align: baseline; }
+.p-loupe [data-a="c"] { letter-spacing: -.014em; }     /* the kern the note talks about */
+.p-loupe .lp-tiny {
+  font-size: 13px; letter-spacing: .04em; font-stretch: 100%; vertical-align: baseline;
+  margin-right: .04em;
+}
+.p-loupe .lp-silly { display: inline-block; transform: rotate(1deg); transform-origin: 0 82%; }  /* yes, really */
+.p-loupe .lp-dot { position: relative; left: 1px; }  /* ok fine, 1px */
+
+/* the small print */
+.p-loupe .lp-notes { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
+.p-loupe .lp-stage:not(.is-mag) .lp-notes { opacity: .78; }
+.p-loupe .lp-n { font-size: 7px; fill: var(--ink); }
+.p-loupe .lp-hand { font-family: var(--f-hand); }
+.p-loupe .lp-mono { font-family: var(--f-mono); font-size: 5.6px; letter-spacing: .04em; }
+.p-loupe text.lp-cream { fill: var(--paper); }
+.p-loupe .lp-joke { font-size: 7.5px; }
+.p-loupe .lp-dim { opacity: .65; }
+.p-loupe .lp-ln { fill: none; stroke: var(--ink); stroke-width: .7; stroke-linecap: round; stroke-linejoin: round; }
+.p-loupe .lp-ln.lp-cream { stroke: var(--paper); }
+.p-loupe .lp-ln.lp-thin { stroke-width: .35; }
+.p-loupe .lp-ln.lp-dash { stroke-dasharray: 2 2; }
+.p-loupe .lp-ln.lp-hair { stroke: var(--paper); stroke-width: .5; }
+.p-loupe .lp-ln.lp-cons { stroke: var(--yellow); stroke-width: .6; stroke-dasharray: 3 1.5; }
+.p-loupe .lp-ln.lp-strike { stroke-width: .8; }
+.p-loupe .lp-base { stroke: rgba(242,237,225,.38); stroke-width: 1; }
+
+/* the loupe */
+.p-loupe .lp-lens { position: absolute; inset: 0; z-index: 3; pointer-events: none; clip-path: circle(0 at 50% 50%); }
+.p-loupe .lp-ring {
+  position: absolute; left: 0; top: 0; z-index: 4; width: 280px; height: 280px; border-radius: 50%;
+  border: 9px solid var(--ink); pointer-events: none;
+  box-shadow: 0 0 0 1.5px rgba(242,237,225,.55), 0 22px 40px -14px rgba(21,18,15,.65), inset 0 0 0 1.5px rgba(242,237,225,.5), inset 0 0 24px rgba(21,18,15,.25);
+  will-change: transform;
+}
+.p-loupe .lp-ring::after { /* glass */
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  background: radial-gradient(circle at 30% 26%, rgba(255,255,255,.32), rgba(255,255,255,0) 34%),
+              radial-gradient(circle at 70% 80%, rgba(255,255,255,.08), rgba(255,255,255,0) 30%);
+}
+.p-loupe .lp-zoom {
+  position: absolute; right: -6px; bottom: 4%; z-index: 1;
+  font: 700 9px/1 var(--f-mono); letter-spacing: .06em; color: var(--paper); background: var(--ink);
+  padding: 4px 5px 3px; transform: rotate(-8deg);
+}
+@media (pointer: coarse) {
+  .p-loupe .lp-ring { pointer-events: auto; touch-action: none; }
+}
+
+/* counter + tip */
+.p-loupe .lp-count, .p-loupe .lp-tip {
+  position: absolute; z-index: 5; left: 50%; transform: translateX(-50%); white-space: nowrap;
+  font: 10px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--paper); pointer-events: none;
+}
+.p-loupe .lp-count { bottom: 20px; }
+.p-loupe .lp-count b { color: var(--yellow); font-weight: 700; }
+.p-loupe .lp-tip {
+  top: 90px; background: var(--ink); padding: 7px 10px 6px; transform: translateX(-50%) rotate(-1deg);
+  transition: opacity .4s, transform .4s var(--ease-out);
+}
+.p-loupe.is-touched .lp-tip { opacity: 0; transform: translateX(-50%) translateY(8px) rotate(-1deg); }
+.p-loupe.is-all .lp-count b { color: var(--paper); background: var(--ink); padding: 0 3px; }
+
+/* furniture */
+.p-loupe .lp-pf { position: absolute; inset: 0; pointer-events: none; font: 10px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--paper); }
+.p-loupe .lp-pf > * { position: absolute; white-space: nowrap; }
+.p-loupe .lp-pf b { font-weight: 700; color: var(--ink); }
+.p-loupe .pf-tl { left: 108px; top: 44px; }
+.p-loupe .pf-tc { left: 50%; top: 44px; transform: translateX(-50%); }
+.p-loupe .pf-bl { left: var(--ml); bottom: 20px; }
+.p-loupe .pf-br { right: var(--mr); bottom: 20px; font-family: var(--f-display); font-weight: 900; font-stretch: 125%; font-size: 12px; letter-spacing: .02em; }
+
+@media (max-width: 759px) {
+  .p-loupe .lp-grid { column-gap: 6px; }
+  .p-loupe .lp-grid span { top: 60px; font-size: 6px; left: 2px; }
+  .p-loupe .lp-tiny { font-size: 10px; }
+  .p-loupe .lp-n { font-size: 6px; }
+  .p-loupe .lp-mono { font-size: 5px; }
+  .p-loupe .lp-ring { border-width: 7px; }
+  .p-loupe .pf-tl { left: 82px; top: 42px; }
+  .p-loupe .pf-tc { display: none; }
+  .p-loupe .pf-br { right: 58px; }
+  .p-loupe .lp-count { left: auto; right: 58px; transform: none; bottom: 40px; font-size: 9px; letter-spacing: .1em; }
+  .p-loupe .lp-tip { top: 76px; font-size: 9px; letter-spacing: .08em; }
+}
+/* measured live: never let base.css's reduced-motion .01ms transition delay a font-size change */
+.p-loupe .lp-type, .p-loupe .lp-type * { transition: none !important; }

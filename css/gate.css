@@ -1,0 +1,82 @@
+.p-gate { background: var(--gate-bg); color: var(--gate-fg); --thread: var(--red); }
+.p-gate[data-mark="patch"] { background: var(--paper) url(../media/tex/paper.webp) 0 0 / 512px; }
+.p-gate[data-mark="grid"] { background: var(--red) url(../media/tex/red.webp) 0 0 / 512px; }
+.p-gate[data-mark="block"] { background: var(--blue) url(../media/tex/blue.webp) 0 0 / 640px; }
+.p-gate[data-mark="rags"] { background: var(--ink); }
+
+.p-gate .gate-pin { position: relative; height: 100vh; height: 100svh; overflow: hidden; }
+.p-gate .gate-stage {
+  position: absolute; inset: 14vh 4vw 20vh; display: grid; place-items: center;
+  will-change: transform;
+}
+.p-gate .gate-svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.p-gate .gate-letter { cursor: pointer; transition: opacity .35s; }
+.p-gate .gate-letter.is-out { opacity: .22; cursor: default; }
+.p-gate .gate-img { transition: transform .5s var(--ease-out); }
+.p-gate .gate-tint { mix-blend-mode: multiply; opacity: .92; transition: opacity .35s; }
+.p-gate .gate-edge { stroke: rgba(0,0,0,.25); stroke-width: 2; }
+.p-gate[data-mark="patch"] .gate-letter, .p-gate[data-mark="rags"] .gate-letter { filter: drop-shadow(5px 8px 0 rgba(21,18,15,.18)); }
+.p-gate[data-mark="rags"] .gate-letter { filter: drop-shadow(0 10px 18px rgba(0,0,0,.6)); }
+.p-gate[data-mark="grid"] .gate-edge { stroke: var(--paper); stroke-width: 6; }
+.p-gate[data-mark="block"] .gate-edge { stroke: #fff; stroke-width: 5; }
+.p-gate .gate-gridlines line { stroke: var(--red); stroke-width: 4; }
+.p-gate .gate-pin.is-hovering .gate-letter:not(.is-hot):not(.is-out) { opacity: .45; }
+.p-gate .gate-letter.is-hot .gate-tint { opacity: .15; }
+.p-gate .gate-letter.is-hot { opacity: 1; }
+
+.p-gate .gate-copy {
+  position: absolute; left: clamp(16px, 7vw, 120px); top: 86px; max-width: 520px; z-index: 2;
+}
+.p-gate .gate-kicker {
+  font: 700 11px/1 var(--f-mono); letter-spacing: .16em; text-transform: uppercase; margin-bottom: 10px; opacity: .8;
+}
+.p-gate .gate-lede { font: 400 clamp(17px, 1.45vw, 22px)/1.25 var(--f-serif); }
+.p-gate .gate-lede b { font: 900 1em/1 var(--f-display); font-stretch: 112%; letter-spacing: -.01em; }
+.p-gate .gate-legend {
+  position: absolute; left: clamp(16px, 7vw, 120px); right: clamp(60px, 9vw, 140px); bottom: 5vh; z-index: 2;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border-top: 2px solid currentColor;
+}
+.p-gate .gate-legend li {
+  display: flex; gap: 12px; align-items: baseline; padding: 12px 10px 0 0; cursor: pointer;
+  transition: transform .3s var(--ease-out);
+}
+.p-gate .gate-legend li.is-out { opacity: .35; cursor: default; }
+.p-gate .gate-legend li.is-hot { transform: translateY(-6px); }
+.p-gate .gate-legend b { font: 900 34px/0.8 var(--f-display); font-stretch: 125%; }
+.p-gate .gate-legend span { font: 400 13px/1.2 var(--f-mono); text-transform: lowercase; }
+.p-gate .gate-legend i { font: italic 400 20px/1 var(--f-serif); display: block; text-transform: none; }
+.p-gate .gate-hint {
+  position: absolute; right: clamp(60px, 9vw, 140px); top: 90px; text-align: right; z-index: 2;
+  font: 22px/1.1 var(--f-hand);
+}
+.p-gate .gate-hint em { display: block; font: 700 11px/1.4 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; font-style: normal; margin-top: 6px; }
+.p-gate .gate-tag {
+  position: absolute; left: 0; top: 0; z-index: 5; pointer-events: none;
+  background: var(--white); color: var(--ink); border: 1px solid var(--ink);
+  padding: 7px 12px 7px 10px; display: flex; gap: 10px; align-items: center;
+  font: 700 12px/1 var(--f-mono); text-transform: lowercase;
+  opacity: 0; transition: opacity .2s; box-shadow: 3px 3px 0 var(--ink);
+  clip-path: polygon(10px 0, 100% 0, 100% 100%, 10px 100%, 0 50%);
+  padding-left: 18px;
+}
+.p-gate .gate-tag.is-on { opacity: 1; }
+.p-gate .gate-tag b { font: 900 18px/1 var(--f-display); font-stretch: 125%; color: var(--red); }
+.p-gate .gate-cover { position: absolute; inset: 0; opacity: 0; pointer-events: none; z-index: 4; }
+
+.p-gate.is-static .gate-pin { height: auto; min-height: 100vh; padding: 120px 0 160px; }
+.p-gate.is-static .gate-stage { position: relative; inset: auto; height: 60vh; margin: 0 4vw; }
+
+@media (max-width: 760px) {
+  .p-gate .gate-stage { inset: 23vh 5vw 31vh; }
+  .p-gate .gate-copy { top: 70px; right: 16px; }
+  .p-gate .gate-lede { font-size: 16px; }
+  .p-gate .gate-hint { top: auto; bottom: calc(5vh + 120px); right: 16px; font-size: 18px; }
+  .p-gate .gate-legend { grid-template-columns: repeat(2, 1fr); left: 16px; right: 16px; row-gap: 6px; }
+  .p-gate .gate-legend b { font-size: 26px; }
+  .p-gate .gate-legend i { font-size: 16px; }
+}
+.p-gate[data-mark="patch"] .gate-img, .p-gate[data-mark="rags"] .gate-img { filter: grayscale(1) contrast(1.2); transition: filter .4s; }
+.p-gate .gate-letter.is-hot .gate-img, .p-gate .gate-letter.is-target .gate-img { filter: none; }
+
+.p-gate .gate-ui { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.p-gate .gate-ui > * { pointer-events: auto; }

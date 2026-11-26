@@ -1,0 +1,120 @@
+.p-hello {
+  --thread: var(--red);
+  background: var(--paper) url(../media/tex/paper.webp) 0 0 / 512px;
+  color: var(--ink);
+  overflow: hidden;
+}
+.p-hello .h-stage {
+  position: relative; min-height: 100vh; min-height: 100svh;
+  padding: 118px 5vw 150px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+/* poster furniture: corner labels + registration marks */
+.p-hello .h-furn { position: absolute; inset: 0; pointer-events: none; }
+.p-hello .h-furn span {
+  position: absolute; font: 700 10px/1 var(--f-mono); letter-spacing: .16em; text-transform: uppercase; opacity: .75;
+}
+.p-hello .f-tl { left: 108px; top: 44px; }
+.p-hello .f-tr { left: 50%; top: 44px; transform: translateX(-50%); }
+.p-hello .f-bl { left: 5vw; bottom: 18px; }
+.p-hello .f-br { right: 5vw; bottom: 18px; }
+.p-hello .h-reg { position: absolute; width: 18px; height: 18px; border: 1px solid var(--ink); border-radius: 50%; opacity: .5; }
+.p-hello .h-reg::before, .p-hello .h-reg::after { content: ''; position: absolute; background: var(--ink); }
+.p-hello .h-reg::before { left: 50%; top: -6px; bottom: -6px; width: 1px; }
+.p-hello .h-reg::after { top: 50%; left: -6px; right: -6px; height: 1px; }
+.p-hello .r-tc { left: 50%; top: 66px; margin-left: -9px; }
+
+.p-hello .h-hey {
+  position: relative; z-index: 3; align-self: flex-start;
+  font: italic 400 clamp(44px, 7.4vw, 124px)/.8 var(--f-serif); color: var(--red);
+  transform: rotate(-4deg) translate(.5vw, .12em); margin-bottom: 0;
+}
+.p-hello .h-hey span { position: relative; }
+.p-hello .h-under { position: absolute; left: 0; bottom: -.18em; width: 100%; height: .3em; overflow: visible; }
+.p-hello .h-under path { fill: none; stroke: var(--red); stroke-width: 5; stroke-linecap: round; }
+
+.p-hello .h-name {
+  position: relative; z-index: 2; margin: 0;
+  font-family: var(--f-display); font-weight: 900; font-stretch: 125%;
+  line-height: .8; letter-spacing: -.015em; text-transform: uppercase;
+  user-select: none; -webkit-user-select: none;
+}
+.p-hello .h-word { display: block; width: max-content; white-space: nowrap; }
+.p-hello .h-word + .h-word { margin-top: .02em; }
+.p-hello .h-l {
+  display: inline-block; position: relative; text-align: center;
+  touch-action: none; cursor: grab; will-change: transform;
+}
+.p-hello .h-l.is-drag { cursor: grabbing; z-index: 5; }
+.p-hello .h-l.has-patch::before {
+  content: ''; position: absolute; inset: .07em -.015em -.02em; z-index: -1;
+  background: var(--patch); transform: rotate(var(--prot));
+  outline: 2px dashed rgba(21,18,15,.55); outline-offset: -7px;
+  box-shadow: 2px 3px 0 rgba(21,18,15,.12);
+  clip-path: polygon(0 2%, 4% 0, 52% 1.5%, 100% 0, 99% 48%, 100% 100%, 46% 98.5%, 2% 100%, 1% 52%);
+}
+.p-hello .h-g { display: inline-block; font-stretch: 125%; }
+.p-hello .h-g.is-img {
+  background-size: cover; background-position: center;
+  -webkit-background-clip: text; background-clip: text;
+  filter: contrast(1.15) saturate(1.2);
+}
+.p-hello .h-g.is-ruled {
+  background: repeating-linear-gradient(0deg, var(--blue) 0 .03em, transparent .03em .13em);
+  -webkit-background-clip: text; background-clip: text;
+}
+.p-hello .h-threads { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; overflow: visible; }
+.p-hello .h-thread { fill: none; stroke: var(--red); stroke-width: 2.6; stroke-dasharray: 10 7; stroke-linecap: round; }
+.p-hello .h-knot { fill: none; stroke: var(--ink); stroke-width: 2.2; stroke-linecap: round; }
+
+.p-hello .h-line {
+  position: absolute; left: 5vw; bottom: 62px; z-index: 3;
+  font: 800 clamp(17px, 1.65vw, 26px)/1.08 var(--f-display); font-stretch: 100%; letter-spacing: -.01em;
+}
+.p-hello .h-roles {
+  position: absolute; left: 39vw; bottom: 64px; z-index: 3; display: flex; gap: 18px;
+  font: 400 13px/1 var(--f-mono); text-transform: lowercase;
+}
+.p-hello .h-roles li::before { content: '[ ] '; white-space: pre; }
+.p-hello .h-roles li:last-child::before { content: '[x] '; color: var(--red); }
+.p-hello .h-roles s { text-decoration-color: var(--red); text-decoration-thickness: 2px; opacity: .6; }
+.p-hello .h-note {
+  position: absolute; right: 7vw; top: 108px; z-index: 3; transform: rotate(4deg);
+  font: 400 clamp(18px, 1.6vw, 26px)/1.05 var(--f-hand); color: var(--blue); text-align: right;
+}
+.p-hello .h-note.is-done { opacity: .25 !important; transition: opacity .6s; }
+.p-hello .h-arrow { position: absolute; width: 90px; height: 70px; right: 104%; top: 40%; transform: scaleX(-1) rotate(80deg); overflow: visible; }
+.p-hello .h-arrow path { fill: none; stroke: var(--blue); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
+.p-hello .h-sticky {
+  position: absolute; right: 6vw; bottom: 48px; z-index: 4; width: 178px; height: 150px; padding: 26px 16px 10px;
+  background: var(--yellow); transform: rotate(-5deg); cursor: grab; touch-action: none;
+  box-shadow: 0 14px 18px -10px rgba(21,18,15,.45), inset 0 -8px 12px -10px rgba(0,0,0,.25);
+  font: 400 23px/1.05 var(--f-hand);
+}
+.p-hello .h-sticky::before { content: ''; position: absolute; left: 50%; top: -10px; width: 70px; height: 22px; margin-left: -35px; background: rgba(255,255,255,.55); transform: rotate(3deg); }
+.p-hello .h-sticky.is-drag { cursor: grabbing; transform: rotate(2deg) scale(1.05); }
+.p-hello .h-tag {
+  position: absolute; left: calc(100% + 1.2vw); bottom: .55em; z-index: 3; white-space: nowrap;
+  background: var(--blue); color: var(--white); padding: 7px 12px 6px; transform: rotate(-2.5deg);
+  display: flex; gap: 10px; align-items: baseline;
+  font: 400 12px/1 var(--f-mono); text-transform: lowercase;
+  clip-path: polygon(2% 0, 98% 6%, 100% 50%, 97% 100%, 1% 94%, 0 50%);
+}
+.p-hello .h-tag b { text-transform: none; font: 900 14px/1 var(--f-display); font-stretch: 125%; }
+
+@media (max-width: 760px) {
+  .p-hello .h-stage { padding: 104px 3vw 250px; justify-content: flex-start; }
+  .p-hello .h-hey { font-size: 15vw; margin: 34px 0 .14em; }
+  .p-hello .h-tag { display: none; }
+  .p-hello .h-word + .h-word { margin-top: .04em; }
+  .p-hello .f-tr, .p-hello .r-tc { display: none; }
+  .p-hello .f-tl { top: 64px; left: 4vw; }
+  .p-hello .h-line { left: 4vw; right: 4vw; bottom: 168px; font-size: 21px; }
+  .p-hello .h-roles { left: 4vw; bottom: 130px; gap: 12px; font-size: 12px; }
+  .p-hello .h-note { top: auto; bottom: 56px; left: 4vw; right: auto; text-align: left; font-size: 19px; transform: rotate(-3deg); }
+  .p-hello .h-arrow { display: none; }
+  .p-hello .h-sticky { width: 118px; height: 100px; font-size: 17px; padding: 18px 10px; right: 5vw; bottom: auto; top: 96px; transform: rotate(6deg); }
+  .p-hello .h-tag { left: auto; right: 4vw; top: 92px; }
+  .p-hello .f-br { display: none; }
+  .p-hello .f-bl { left: 4vw; bottom: 18px; }
+}

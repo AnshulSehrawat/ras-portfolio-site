@@ -1,0 +1,310 @@
+/* sketchbook: R = rough. a giant loose spread on a green cloth cover. no grid. */
+.p-sketchbook {
+  --thread: var(--green);
+  --cover: #17392A;
+  background: var(--cover);
+  color: var(--ink);
+}
+
+/* ---------- stage + world ---------- */
+.p-sketchbook .sk-stage {
+  position: relative; height: 100vh; height: 100svh; overflow: hidden;
+  background: var(--cover) url('../media/tex/crumple.webp') 0 0 / 512px;
+  background-blend-mode: multiply;
+  touch-action: none; outline: none;
+  user-select: none; -webkit-user-select: none;
+}
+.p-sketchbook .sk-world { position: absolute; left: 0; top: 0; transform-origin: 0 0; }
+.p-sketchbook .sk-world.is-moving { will-change: transform; }
+
+/* the two pages + the page stack around them */
+.p-sketchbook .sk-page {
+  position: absolute; top: 0; height: 100%; width: 50%;
+  background-color: var(--paper);
+  background-image:
+    radial-gradient(ellipse 60% 40% at 30% 70%, rgba(186, 160, 110, .10), transparent 70%),
+    radial-gradient(ellipse 30% 22% at 76% 18%, rgba(186, 160, 110, .09), transparent 70%),
+    url('../media/tex/paper.webp');
+  background-size: auto, auto, 512px;
+}
+.p-sketchbook .sk-page--l { left: 0; border-radius: 22px 0 0 22px; box-shadow: -2px 0 0 #e3dccb, -5px 2px 0 #d8cfbb, -8px 4px 0 #cfc5ae, -12px 8px 30px rgba(0,0,0,.45); }
+.p-sketchbook .sk-page--r { right: 0; border-radius: 0 22px 22px 0; box-shadow: 2px 0 0 #e3dccb, 5px 2px 0 #d8cfbb, 8px 4px 0 #cfc5ae, 12px 8px 30px rgba(0,0,0,.45);
+  background-image:
+    radial-gradient(ellipse 40% 30% at 60% 80%, rgba(186, 160, 110, .10), transparent 70%),
+    url('../media/tex/paper.webp');
+  background-size: auto, 512px; background-position: 0 0, 200px 130px;
+}
+.p-sketchbook .sk-under, .p-sketchbook .sk-layer, .p-sketchbook .sk-ink { position: absolute; inset: 0; }
+.p-sketchbook .sk-ink { z-index: 60; pointer-events: none; }
+.p-sketchbook .sk-tile { position: absolute; width: 512px; height: 512px; mix-blend-mode: multiply; }
+
+/* the fold + the stitch through it */
+.p-sketchbook .sk-fold {
+  position: absolute; top: 0; width: 240px; pointer-events: none;
+  background: linear-gradient(90deg, transparent 0, rgba(80, 60, 30, .06) 30%, rgba(40, 30, 15, .22) 49%, rgba(255,255,255,.25) 50.5%, rgba(80, 60, 30, .06) 70%, transparent 100%);
+}
+.p-sketchbook .sk-bind { position: absolute; top: 0; overflow: visible; pointer-events: none; }
+.p-sketchbook .sk-hole { fill: #3b3226; }
+.p-sketchbook .sk-stitch { fill: none; stroke: var(--green); stroke-width: 4; stroke-linecap: round; }
+.p-sketchbook .sk-stitch-sh { fill: none; stroke: rgba(0,0,0,.25); stroke-width: 4; stroke-linecap: round; transform: translate(1.5px, 2px); }
+.p-sketchbook .sk-tail { stroke-width: 3.2; }
+
+/* the thread you follow */
+.p-sketchbook .sk-threadsvg { position: absolute; left: 0; top: 0; overflow: visible; pointer-events: none; }
+.p-sketchbook .sk-thread, .p-sketchbook .sk-thread-sh { fill: none; stroke-linecap: round; stroke-dasharray: 1 1; stroke-dashoffset: 1; }
+.p-sketchbook .sk-thread { stroke: var(--green); stroke-width: 3.4; }
+.p-sketchbook .sk-thread-sh { stroke: rgba(30, 20, 5, .22); stroke-width: 3.4; transform: translate(2px, 3px); }
+
+.p-sketchbook .sk-crayonfield { position: absolute; mix-blend-mode: multiply; opacity: .92; pointer-events: none; }
+.p-sketchbook .sk-crayonfield:not([src]) { visibility: hidden; }
+
+/* ---------- pasted pieces ---------- */
+.p-sketchbook .sk-it { position: absolute; margin: 0; transform: rotate(var(--r)); cursor: zoom-in; }
+.p-sketchbook .sk-lift { position: relative; width: 100%; height: 100%; transition: transform .5s cubic-bezier(.34, 1.56, .64, 1); }
+.p-sketchbook .sk-paper {
+  position: relative; width: 100%; height: 100%;
+  background: #fbf8f1;
+  box-shadow: 0 1px 1px rgba(40,30,10,.18), 0 6px 14px -6px rgba(40,30,10,.35);
+}
+.p-sketchbook .m-torn .sk-paper, .p-sketchbook .m-bare .sk-paper, .p-sketchbook .m-corners .sk-paper { background: transparent; }
+.p-sketchbook .m-torn .sk-lift { filter: drop-shadow(0 3px 4px rgba(40,30,10,.28)); }
+.p-sketchbook .m-torn .sk-paper { box-shadow: none; }
+.p-sketchbook .m-bare .sk-paper { box-shadow: 0 1px 0 rgba(40,30,10,.18); }
+.p-sketchbook .sk-paper img { width: 100%; height: 100%; object-fit: cover; display: block; background: #e7e0d0; }
+.p-sketchbook .sk-paper img:not([src]) { visibility: hidden; }
+@media (hover: hover) {
+  .p-sketchbook .sk-stage:not(.is-panning):not(.is-drawing) .sk-it:hover { z-index: 55 !important; }
+  .p-sketchbook .sk-stage:not(.is-panning):not(.is-drawing) .sk-it:hover .sk-lift { transform: rotate(calc(var(--r) * -0.6)) scale(1.045) translateY(-6px); }
+  .p-sketchbook .sk-stage:not(.is-panning):not(.is-drawing) .sk-it:hover .sk-paper { box-shadow: 0 2px 2px rgba(40,30,10,.12), 0 26px 40px -14px rgba(40,30,10,.5); }
+}
+.p-sketchbook .sk-it:focus-visible { outline: 3px dashed var(--green); outline-offset: 8px; }
+
+/* coloured scrap behind a piece */
+.p-sketchbook .sk-back { position: absolute; inset: -4%; z-index: -1; pointer-events: none; }
+
+/* tape */
+.p-sketchbook .sk-tape {
+  position: absolute; z-index: 3; width: 100px; height: 30px; pointer-events: none;
+  background: rgba(255, 212, 59, .7); mix-blend-mode: multiply;
+  clip-path: polygon(2% 8%, 8% 0, 16% 6%, 24% 0, 33% 5%, 42% 0, 52% 6%, 61% 0, 70% 5%, 79% 0, 88% 6%, 96% 0, 100% 10%, 98% 92%, 92% 100%, 84% 94%, 75% 100%, 66% 95%, 57% 100%, 47% 94%, 38% 100%, 29% 95%, 20% 100%, 11% 94%, 3% 100%, 0 88%);
+}
+.p-sketchbook .sk-tape.t-g { background: rgba(30, 156, 91, .55); }
+.p-sketchbook .sk-tape.t-b { background: rgba(36, 67, 240, .45); }
+.p-sketchbook .sk-tape.t-w { background: rgba(255, 255, 255, .72); mix-blend-mode: normal; }
+.p-sketchbook .sk-tape.t-r { background: repeating-linear-gradient(90deg, rgba(229, 51, 31, .55) 0 7px, rgba(255,255,255,.6) 7px 14px); }
+
+/* photo corners */
+.p-sketchbook .sk-corner { position: absolute; z-index: 3; width: 34px; height: 34px; background: #231d17; pointer-events: none; }
+.p-sketchbook .sk-corner.c-tl { left: -7px; top: -7px; clip-path: polygon(0 0, 100% 0, 0 100%); }
+.p-sketchbook .sk-corner.c-tr { right: -7px; top: -7px; clip-path: polygon(0 0, 100% 0, 100% 100%); }
+.p-sketchbook .sk-corner.c-bl { left: -7px; bottom: -7px; clip-path: polygon(0 0, 100% 100%, 0 100%); }
+.p-sketchbook .sk-corner.c-br { right: -7px; bottom: -7px; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+
+/* paper clip, push pin, staples */
+.p-sketchbook .sk-clip { position: absolute; z-index: 4; top: -26px; width: 26px; height: 70px; pointer-events: none; filter: drop-shadow(1px 2px 1px rgba(0,0,0,.25)); }
+.p-sketchbook .sk-clip svg { width: 100%; height: 100%; }
+.p-sketchbook .sk-pin {
+  position: absolute; z-index: 4; top: -6px; width: 22px; height: 22px; border-radius: 50%; pointer-events: none;
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.75) 0 12%, transparent 30%), var(--pin);
+  box-shadow: inset -2px -3px 0 rgba(0,0,0,.22), 3px 5px 3px rgba(0,0,0,.28);
+}
+.p-sketchbook .sk-staple {
+  position: absolute; z-index: 4; top: 8px; width: 34px; height: 5px; border-radius: 2px; pointer-events: none;
+  background: linear-gradient(#e9e9e9, #8b8b8b); box-shadow: 0 1px 1px rgba(0,0,0,.35);
+}
+
+/* flip-books: a stack you flick */
+.p-sketchbook .sk-flip .sk-paper::before, .p-sketchbook .sk-flip .sk-paper::after {
+  content: ''; position: absolute; inset: 0; z-index: -1; background: #f7f2e7; box-shadow: 0 1px 2px rgba(40,30,10,.25);
+}
+.p-sketchbook .sk-flip .sk-paper::before { transform: translate(7px, 6px) rotate(1.4deg); }
+.p-sketchbook .sk-flip .sk-paper::after { transform: translate(13px, 11px) rotate(2.6deg); background: #efe8da; }
+.p-sketchbook .sk-flip .sk-paper { cursor: ew-resize; }
+.p-sketchbook .sk-flip .sk-fr { position: absolute; left: var(--pad, 0); top: var(--pad, 0); width: calc(100% - 2 * var(--pad, 0px)); height: calc(100% - 2 * var(--pad, 0px)); opacity: 0; }
+.p-sketchbook .sk-flip .sk-fr.is-on { opacity: 1; }
+.p-sketchbook .sk-flip.is-flick .sk-lift { animation: sk-flick .32s steps(3) 1; }
+@keyframes sk-flick { 0% { transform: rotate(-1.2deg) translateY(-3px); } 50% { transform: rotate(1deg); } 100% { transform: none; } }
+.p-sketchbook .sk-ear {
+  position: absolute; right: -10px; bottom: -14px; z-index: 6;
+  display: flex; gap: 8px; align-items: baseline;
+  background: var(--yellow); color: var(--ink); padding: 7px 10px 6px;
+  font: 400 21px/1 var(--f-marker); transform: rotate(-4deg);
+  box-shadow: 2px 3px 0 rgba(21,18,15,.85);
+}
+.p-sketchbook .sk-ear .sk-count { font: 700 11px/1 var(--f-mono); letter-spacing: .06em; }
+.p-sketchbook .sk-ear:hover { background: var(--white); }
+.p-sketchbook .sk-ear:active { transform: rotate(-4deg) translateY(2px); box-shadow: 0 1px 0 rgba(21,18,15,.85); }
+
+/* flaps: taped at the top, lift to see underneath */
+.p-sketchbook .sk-flap .sk-lift { perspective: 1400px; }
+.p-sketchbook .sk-flap .sk-paper { background: transparent; box-shadow: none; }
+.p-sketchbook .sk-flap-under { position: absolute; inset: 0; box-shadow: 0 1px 1px rgba(40,30,10,.18), 0 6px 14px -6px rgba(40,30,10,.35); }
+.p-sketchbook .sk-flap-top {
+  position: absolute; inset: 0; transform-origin: 50% 0; z-index: 2;
+  transition: transform .7s cubic-bezier(.3, 1.45, .5, 1);
+  box-shadow: 0 1px 1px rgba(40,30,10,.2), 0 10px 18px -8px rgba(40,30,10,.45);
+  background: #fbf8f1;
+}
+.p-sketchbook .sk-flap-top img { width: 100%; height: 100%; object-fit: cover; }
+.p-sketchbook .sk-flap.is-up .sk-flap-top { transform: rotateX(-68deg) translateY(-6px); }
+.p-sketchbook .sk-flaptape { top: -16px; z-index: 5; }
+
+/* ---------- handwriting ---------- */
+.p-sketchbook .sk-note { position: absolute; z-index: 45; margin: 0; white-space: pre-line; line-height: 1.02; pointer-events: none; transform-origin: 0 50%; }
+.p-sketchbook .f-hand { font-family: var(--f-hand); }
+.p-sketchbook .f-pencil { font-family: var(--f-pencil); line-height: .9; }
+.p-sketchbook .f-marker { font-family: var(--f-marker); line-height: 1; }
+.p-sketchbook .f-display { font-family: var(--f-display); font-weight: 900; font-stretch: 125%; letter-spacing: -.02em; line-height: .8; }
+.p-sketchbook .f-deva { font-family: var(--f-deva); line-height: 1; }
+
+.p-sketchbook .sk-word { position: absolute; z-index: 44; white-space: nowrap; pointer-events: none; line-height: .9; }
+.p-sketchbook .sk-word span { display: inline-block; }
+
+/* the giant crayon R: Archivo's widest, heaviest R, filled with wax */
+.p-sketchbook .sk-bigr {
+  position: absolute; left: 70px; top: 40px; z-index: 5; pointer-events: none;
+  font: 900 760px/.78 var(--f-display); font-stretch: 125%;
+  color: rgba(30, 156, 91, .18);
+  background: var(--wax, none) 0 0 / 520px 600px repeat;
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transform: rotate(-3deg);
+}
+
+/* ---------- doodles ---------- */
+.p-sketchbook .sk-dd { position: absolute; z-index: 46; overflow: visible; pointer-events: none; }
+.p-sketchbook .sk-dpath { fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1 1; stroke-dashoffset: 1; }
+
+.p-sketchbook .sk-dot { position: absolute; z-index: 8; border-radius: 50%; pointer-events: none; box-shadow: inset -2px -3px 0 rgba(0,0,0,.08); }
+
+/* ---------- stickers (peel + move) ---------- */
+.p-sketchbook .sk-sticker {
+  position: absolute; z-index: 50; cursor: grab; touch-action: none;
+  transform: rotate(var(--r)); transition: transform .35s cubic-bezier(.34, 1.56, .64, 1), filter .2s;
+  filter: drop-shadow(0 2px 1px rgba(30, 20, 5, .3));
+  display: grid; place-items: center; text-align: center;
+}
+.p-sketchbook .sk-sticker.is-peeled { cursor: grabbing; transform: rotate(calc(var(--r) * .4)) scale(1.12); filter: drop-shadow(0 16px 12px rgba(30, 20, 5, .35)); z-index: 70; }
+.p-sketchbook .sk-sticker span { display: block; }
+.p-sketchbook .sk-sticker.k-round {
+  width: 150px; height: 150px; border-radius: 50%; padding: 18px;
+  background: var(--green); color: var(--paper); border: 6px solid #fff;
+  font: 900 21px/.95 var(--f-display); font-stretch: 112%; text-transform: uppercase;
+}
+.p-sketchbook .sk-sticker.k-star {
+  width: 120px; height: 120px; background: var(--yellow); color: var(--ink); font: 400 48px/1 var(--f-display);
+  clip-path: polygon(50% 0, 61% 34%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 34%);
+}
+.p-sketchbook .sk-sticker.k-oval { padding: 18px 30px; border-radius: 50%; background: var(--red); color: var(--white); border: 5px solid #fff; font: 400 34px/1 var(--f-marker); }
+.p-sketchbook .sk-sticker.k-stamp {
+  padding: 14px 18px; color: var(--blue); border: 4px solid var(--blue); border-radius: 6px;
+  font: 800 22px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase;
+  background: rgba(255,255,255,.35); filter: none;
+  outline: 2px solid var(--blue); outline-offset: 4px;
+}
+.p-sketchbook .sk-sticker.k-label { padding: 12px 22px 10px; background: #fffdf6; color: var(--ink); border: 1.5px solid var(--ink); font: 400 34px/1 var(--f-hand); box-shadow: 4px 4px 0 var(--green); }
+
+/* ---------- HUD ---------- */
+.p-sketchbook .sk-hud { position: absolute; inset: 0; pointer-events: none; z-index: 100; }
+.p-sketchbook .sk-hud > * { pointer-events: auto; }
+.p-sketchbook .sk-lbl { margin: 0; font: 700 10.5px/1.45 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ink); }
+.p-sketchbook .sk-lbl b { font: 900 13px/1 var(--f-display); font-stretch: 125%; color: var(--green); }
+.p-sketchbook .sk-lbl--tl, .p-sketchbook .sk-lbl--tr {
+  position: absolute; top: 74px; background: var(--paper); padding: 7px 10px; border: 1px solid var(--ink); pointer-events: none !important;
+}
+.p-sketchbook .sk-lbl--tl { left: 16px; transform: rotate(-1.5deg); }
+.p-sketchbook .sk-lbl--tr { right: 16px; text-align: right; transform: rotate(1.2deg); }
+.p-sketchbook .sk-hint {
+  position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%) rotate(-1deg);
+  margin: 0; padding: 8px 14px 7px; background: var(--ink); color: var(--paper);
+  font: 700 11px/1 var(--f-mono); letter-spacing: .12em; text-transform: uppercase; white-space: nowrap;
+  transition: opacity .4s, transform .5s var(--ease-out); pointer-events: none !important;
+}
+.p-sketchbook .sk-hint.is-gone { opacity: 0; transform: translateX(-50%) translateY(14px); }
+
+/* the crayon box */
+.p-sketchbook .sk-box {
+  position: absolute; left: 18px; bottom: 18px; padding: 10px 12px 0;
+  background: #fffdf6 url('../media/tex/crumple.webp') 0 0 / 256px; background-blend-mode: multiply;
+  border: 1.5px solid var(--ink); box-shadow: 5px 5px 0 var(--ink);
+  transform: rotate(-1.2deg);
+}
+.p-sketchbook .sk-box-lbl { margin: 0 0 6px; font: 400 19px/1 var(--f-hand); color: var(--ink); }
+.p-sketchbook .sk-box-row { display: flex; align-items: flex-end; gap: 6px; height: 74px; overflow: hidden; border-bottom: 2px solid var(--ink); }
+.p-sketchbook .sk-tool { position: relative; display: block; transition: transform .35s cubic-bezier(.34, 1.56, .64, 1); }
+.p-sketchbook .sk-crayon { width: 20px; height: 84px; transform: translateY(26px); }
+.p-sketchbook .sk-crayon svg { width: 20px; height: 84px; }
+.p-sketchbook .sk-crayon:hover { transform: translateY(16px); }
+.p-sketchbook .sk-crayon.is-on { transform: translateY(2px) rotate(-6deg); }
+.p-sketchbook .sk-hand { width: 52px; height: 64px; display: grid; justify-items: center; align-content: end; padding-bottom: 4px; margin-right: 4px; }
+.p-sketchbook .sk-hand svg { width: 30px; height: 30px; fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.p-sketchbook .sk-hand em { font: 700 9px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; font-style: normal; margin-top: 3px; }
+.p-sketchbook .sk-hand.is-on { background: var(--yellow); }
+.p-sketchbook .sk-rip {
+  display: block; width: calc(100% + 24px); margin: 0 -12px; padding: 10px 6px 9px;
+  font: 700 11px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--red);
+}
+.p-sketchbook .sk-rip:hover { background: var(--red); color: var(--white); }
+.p-sketchbook .sk-rip.is-shake { animation: sk-shake .35s steps(4) 1; }
+.p-sketchbook .sk-rip.is-ripped span::after { content: ' ✓ gone'; }
+@keyframes sk-shake { 25% { transform: translateX(-4px); } 50% { transform: translateX(4px); } 75% { transform: translateX(-2px); } }
+
+/* minimap */
+.p-sketchbook .sk-miniwrap { position: absolute; right: 60px; bottom: 18px; transform: rotate(1deg); }
+.p-sketchbook .sk-miniwrap .sk-lbl { display: inline-block; margin-bottom: 6px; background: var(--ink); color: var(--paper); padding: 4px 7px 3px; font-size: 9.5px; }
+.p-sketchbook .sk-miniwrap .sk-coords { display: block; width: max-content; margin: 6px 0 0 auto; }
+.p-sketchbook .sk-mini { position: relative; background: var(--paper); border: 1.5px solid var(--ink); cursor: crosshair; overflow: hidden; box-shadow: 4px 4px 0 rgba(0,0,0,.45); }
+.p-sketchbook .sk-mini-it { position: absolute; background: rgba(21, 18, 15, .28); }
+.p-sketchbook .sk-mini-fold { position: absolute; left: 50%; top: 0; bottom: 0; width: 1.5px; background: var(--green); }
+.p-sketchbook .sk-mini-view { position: absolute; left: 0; top: 0; border: 2px solid var(--red); background: rgba(229, 51, 31, .08); pointer-events: none; }
+
+/* crayon cursor while drawing */
+.p-sketchbook .sk-craycur {
+  position: absolute; left: 0; top: 0; width: 16px; height: 66px; margin: -2px 0 0 -8px; opacity: 0;
+  pointer-events: none !important; transform-origin: 8px 2px; --c: var(--green);
+}
+.p-sketchbook .sk-craycur svg { width: 100%; height: 100%; filter: drop-shadow(2px 3px 1px rgba(0,0,0,.25)); }
+.p-sketchbook .sk-stage.is-drawing .sk-it { cursor: crosshair; }
+.p-sketchbook .sk-stage.is-panning { cursor: grabbing; }
+
+/* ---------- mobile ---------- */
+@media (max-width: 760px) {
+  .p-sketchbook .sk-stage { touch-action: pan-y; }
+  .p-sketchbook .sk-stage.is-drawing { touch-action: none; }
+  .p-sketchbook .sk-lbl--tl { top: 62px; left: 12px; font-size: 9px; }
+  .p-sketchbook .sk-lbl--tr { display: none; }
+  .p-sketchbook .sk-miniwrap { display: none; }
+  .p-sketchbook .sk-box { left: 10px; bottom: 10px; padding: 0 0 0 8px; display: flex; align-items: stretch; transform: rotate(-.8deg); box-shadow: 4px 4px 0 var(--ink); }
+  .p-sketchbook .sk-box-lbl { display: none; }
+  .p-sketchbook .sk-box-row { height: 58px; border-bottom: 0; gap: 7px; padding-right: 8px; }
+  .p-sketchbook .sk-crayon { transform: translateY(30px); }
+  .p-sketchbook .sk-crayon.is-on { transform: translateY(6px) rotate(-6deg); }
+  .p-sketchbook .sk-hand { width: 40px; height: 52px; margin-right: 0; }
+  .p-sketchbook .sk-hand svg { width: 24px; height: 24px; }
+  .p-sketchbook .sk-rip { width: 62px; margin: 0; padding: 6px; border-left: 2px dashed var(--ink); font-size: 9px; line-height: 1.25; letter-spacing: .1em; white-space: normal; }
+  .p-sketchbook .sk-hint { bottom: auto; top: 108px; font-size: 9.5px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .p-sketchbook .sk-stage { height: 92vh; }
+  .p-sketchbook .sk-lift, .p-sketchbook .sk-flap-top, .p-sketchbook .sk-sticker { transition: none; }
+}
+
+/* the loose sheet for the viewer: your turn */
+.p-sketchbook .sk-guest {
+  position: absolute; z-index: 9; pointer-events: none;
+  background-color: #fbf9f3;
+  background-image: linear-gradient(90deg, transparent 86px, rgba(229, 51, 31, .45) 86px 88px, transparent 88px),
+    repeating-linear-gradient(180deg, transparent 0 39px, rgba(36, 67, 240, .2) 39px 40px);
+  background-position: 0 0, 0 70px;
+  box-shadow: 0 1px 1px rgba(40,30,10,.18), 0 14px 26px -12px rgba(40,30,10,.4);
+  clip-path: polygon(0 1%, 4% 0, 9% 1.2%, 15% 0, 22% .8%, 30% 0, 38% 1%, 47% .2%, 56% 1.1%, 64% 0, 73% .9%, 81% .1%, 90% 1%, 100% 0, 100% 100%, 0 100%);
+}
+.p-sketchbook .sk-guest h3 { position: absolute; left: 110px; top: 22px; margin: 0; font: 400 74px/1 var(--f-marker); color: var(--green); transform: rotate(-2deg); }
+.p-sketchbook .sk-guest p { position: absolute; left: 112px; top: 112px; margin: 0; font: 400 30px/40px var(--f-hand); color: var(--ink); max-width: 640px; }
+.p-sketchbook .sk-guest .sk-holes { position: absolute; left: 30px; top: 60px; bottom: 40px; width: 22px;
+  background: radial-gradient(circle, var(--paper) 0 8px, transparent 9px) 0 0 / 22px 120px repeat-y; }
+
+/* a needle rides the tip of the thread */
+.p-sketchbook .sk-needle { position: absolute; left: 0; top: 0; z-index: 2; width: 74px; height: 14px; margin: -7px 0 0 -70px; pointer-events: none; transform-origin: 70px 7px; }
+.p-sketchbook .sk-needle svg { width: 100%; height: 100%; overflow: visible; filter: drop-shadow(1px 3px 1px rgba(0,0,0,.25)); }
