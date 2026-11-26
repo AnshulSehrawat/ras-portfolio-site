@@ -697,7 +697,7 @@ export async function mount(el, ctx) {
     const r = viewRect(700 / Math.max(cam.s, 0.3));
     for (const o of objs) {
       if (!o.imgs.length || !near(o, r)) continue;
-      o.imgs.forEach((im) => { im.src = im.dataset.src; im.removeAttribute('data-src'); });
+      o.imgs.forEach((im) => { if (im.dataset.src) { im.src = im.dataset.src; im.removeAttribute('data-src'); } }); // core/imgload may have started it already
       o.imgs = [];
     }
   }
