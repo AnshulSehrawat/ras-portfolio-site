@@ -13,3 +13,6 @@ Run it:
 - `js/content/logos.js` — the owner's RA.S marks, traced from `assets/logo sheet.psd`.
 - `js/sections/<id>.js` + `css/<id>.css` — one patch each. `?only=<id>` shows one patch alone.
 - `media/tex/` — procedural paper textures (`python3 tools/build_textures.py`).
+- `js/content/previews.js` + `media/**/*.avif` — `python3 tools/build_previews.py` after any media change: AVIF copies
+  and a tiny blurred preview + tone per photo. `js/core/imgload.js` shows the preview under every image until the photo
+  is in, starts lazy images 1600px early and fetches the rest when the page is idle, so no image is ever an empty box.

@@ -2,6 +2,7 @@
 // drag a letter: the thread stretches and the letter goes thin. let go: it springs home.
 // tap a letter: it swaps fabric. left alone, a letter wriggles loose now and then.
 import { h, svg, clamp, rng } from '../core/util.js';
+import { previewURL } from '../core/imgload.js';
 
 // fabrics. 'img' letters show the owner's own work through the glyph.
 const FABRIC = [
@@ -53,7 +54,8 @@ export async function mount(el, ctx) {
     s.setProperty('--prot', `${(R() - .5) * 7}deg`);
     st.g.classList.toggle('is-img', !!f.img);
     st.g.classList.toggle('is-ruled', !!f.ruled);
-    gs.backgroundImage = f.img ? `url(${img(f.img, 's')})` : '';
+    // photo over its own blurred preview over ink (css): the letter is never blank, even before the photo is in
+    gs.backgroundImage = f.img ? [`url(${img(f.img, 's')})`, previewURL(f.img)].filter(Boolean).join(', ') : '';
     gs.color = f.img ? 'transparent' : f.c;
     gs.webkitTextStroke = f.stroke ? '0.035em ' + f.stroke : '';
     if (f.ruled) { gs.color = 'transparent'; gs.webkitTextStroke = '0.03em var(--ink)'; }

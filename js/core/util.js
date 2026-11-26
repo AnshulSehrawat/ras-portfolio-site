@@ -34,10 +34,11 @@ export function svg(tag, attrs = {}, ...kids) {
   return el;
 }
 
-// image url for a media id: img('b01') -> media/ads/b01.webp, img('a12','s') -> small
+// image url for a media id: img('b01') -> media/ads/b01.avif (or .webp where AVIF can't show), img('a12','s') -> small
+export const photo = { ext: 'webp' };
 export function img(id, size = '') {
   const dir = id[0] === 'b' ? 'ads' : id[0] === 'x' ? 'archive' : 'art';
-  return `media/${dir}/${id}${size ? '-' + size : ''}.webp`;
+  return `media/${dir}/${id}${size ? '-' + size : ''}.${photo.ext}`;
 }
 
 export const isTouch = () => matchMedia('(pointer: coarse)').matches;

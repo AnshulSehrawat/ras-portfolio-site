@@ -1,6 +1,7 @@
 // RA.S gate: the owner's wordmark, a different mark on every return. Each letter is a window into a world.
 // Scroll assembles the mark, holds, then zooms through the target letter into its world. Click any letter to jump.
 import { h, svg, rng, clamp } from '../core/util.js';
+import { previews } from '../content/previews.js';
 
 const LOOK = {
   // field colour, patch colour, shape colour, how images sit in the letters
@@ -49,7 +50,8 @@ export async function mount(el, ctx) {
     const win = svg('g', { 'clip-path': `url(#${cid})`, class: 'gate-win' });
     // the world preview fills the letter's bbox (worked out after it's in the DOM)
     const im = svg('image', { href: `media/gate/${world}.webp`, preserveAspectRatio: 'xMidYMid slice', class: 'gate-img' });
-    win.append(im);
+    // the preview's own tone fills the window until the picture is in, so a letter is never an empty hole
+    win.append(svg('rect', { class: 'gate-ph', x: 0, y: 0, width: L.w, height: L.h, fill: previews['gate/' + world]?.[1] || '#15120F' }), im);
     if (look.mode === 'patch') win.append(svg('rect', { class: 'gate-tint', x: 0, y: 0, width: L.w, height: L.h, fill: look.patch }));
     if (look.mode === 'pixel') { im.setAttribute('href', `media/gate/${world}-px.png`); im.style.imageRendering = 'pixelated'; im.dataset.full = `media/gate/${world}.webp`; }
     const hit = svg('path', { d: windowPath, class: 'gate-hit', fill: 'transparent' });

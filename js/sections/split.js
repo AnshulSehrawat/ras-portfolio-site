@@ -2,7 +2,7 @@
 // one poster, two worlds sewn together by a seam the viewer moves. left of the seam a strict blue swiss poster
 // ("i sell things."), right of it a crayon page ("i make things."). each world hides its work under the other one,
 // so you have to push the seam to see it. the zip pull carries a woven label: "same guy."
-import { h, svg, clamp, rng } from '../core/util.js';
+import { h, svg, clamp, rng, img as photoUrl } from '../core/util.js';
 
 const POSTERS = ['hello', 'split', 'wardrobe', 'loupe'];
 
@@ -243,7 +243,7 @@ function scribbleMark() {
 function piece(id, cls, note, w, hgt) {
   return h(`figure.sp-piece.${cls}`, {},
     h('span.tape'),
-    h('img', { src: `media/art/${id}-s.webp`, alt: 'artwork by anshul', width: w, height: hgt, loading: 'lazy', decoding: 'async' }),
+    h('img', { src: photoUrl(id, 's'), alt: 'artwork by anshul', width: w, height: hgt, loading: 'lazy', decoding: 'async' }),
     h('figcaption', {}, note));
 }
 

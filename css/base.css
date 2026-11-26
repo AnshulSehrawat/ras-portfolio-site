@@ -43,6 +43,13 @@ body {
   overflow-x: hidden;
 }
 img, svg, video, canvas { display: block; max-width: 100%; }
+/* no empty boxes: a tiny blurred preview + the photo's own tone sit under every photo until it has loaded
+   (js/core/imgload.js), then the photo sharpens in over it */
+img.ph { background-size: cover; background-position: center; background-repeat: no-repeat; }
+img.ph-err { color: transparent; font-size: 0; }
+img.ph-in { animation: ph-in .5s ease-out both; clip-path: inset(0); }
+@keyframes ph-in { from { filter: blur(10px) saturate(.85); } to { filter: blur(0) saturate(1); } }
+@media (prefers-reduced-motion: reduce) { img.ph-in { animation: none; } }
 button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
 a { color: inherit; }
 h1, h2, h3, h4, p, figure, ul, ol { margin: 0; padding: 0; }

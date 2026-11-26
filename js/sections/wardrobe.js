@@ -383,6 +383,7 @@ function buildDefs(defs, ctx) {
   const img = (id) => ctx.img(id, 's');
   const pat = (id, attrs, ...kids) => svg('pattern', { id, ...attrs }, ...kids);
   const artPat = (id, src) => pat(id, { patternUnits: 'objectBoundingBox', patternContentUnits: 'objectBoundingBox', width: 1, height: 1 },
+    svg('rect', { width: 1, height: 1, fill: '#15120F' }), // ink under the photo: the letter shows even before it loads
     svg('image', { href: src, width: 1, height: 1, preserveAspectRatio: 'xMidYMid slice' }));
   defs.append(
     artPat('wd-art1', img('a25')),

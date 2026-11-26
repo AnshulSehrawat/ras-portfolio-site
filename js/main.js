@@ -3,7 +3,8 @@ import { site } from './content/site.js';
 import { cuts } from './content/cuts.js';
 import { media } from './content/media.js';
 import { logos } from './content/logos.js';
-import { h, svg, img, tornClip, stitchPath, isTouch, reduced, mobile } from './core/util.js';
+import { h, svg, img, photo, tornClip, stitchPath, isTouch, reduced, mobile } from './core/util.js';
+import { watchImages, avifOK } from './core/imgload.js';
 import { makeCursor } from './core/cursor.js';
 import { makeLightbox } from './core/lightbox.js';
 import { makeChrome } from './core/chrome.js';
@@ -41,6 +42,8 @@ function idFor(b, i) {
 const SEAM_COLORS = ['#E5331F', '#15120F', '#2443F0', '#F2EDE1'];
 
 async function boot() {
+  if (await avifOK()) photo.ext = 'avif';
+  watchImages(document.body);
   const list = only ? blocks.filter((b, i) => b === only || idFor(b, i) === only || (only === 'gate' && b.startsWith('gate'))).slice(0, 1) : blocks;
   let gateN = 0;
   for (let i = 0; i < list.length; i++) {
