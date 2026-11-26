@@ -29,7 +29,7 @@ export async function mount(el, ctx) {
       h('p.sp-info.sp-info--r', {}, 'grid: 8 col / 12 row', h('br'), 'gutter 16 / margin 56', h('br'), 'archivo 900, 62% wide'),
       h('h2.sp-h.sp-h--des', {}, h('span.sp-l', {}, 'i sell'), h('span.sp-l', {}, 'things.')),
       h('ol.sp-svc', {}, svc.map((s, i) => h('li', {}, h('b', {}, String(i + 1).padStart(2, '0')), s))),
-      ...ads.map((a, i) => h(`figure.sp-ad.sp-ad--${i + 1}`, {},
+      ...ads.map((a, i) => h(`figure.sp-pin.sp-pin--${i + 1}`, {},
         h('img', { src: img(a.id, 's'), alt: 'static ad by anshul: ' + a.cap, width: 560, height: 700, loading: 'lazy', decoding: 'async' }),
         h('figcaption', {}, h('b', {}, `fig. 0${i + 1}`), ` static ad, 4:5. ${a.cap}`))),
       h('p.sp-push', { 'aria-hidden': 'true' }, 'the ads are under the crayons →'),
