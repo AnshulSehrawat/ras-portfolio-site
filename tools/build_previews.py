@@ -1,6 +1,6 @@
 # Placeholders + AVIF copies for every photo on the site.
 # Run: python3 tools/build_previews.py   (from the site folder; needs Pillow with AVIF)
-# - media/{ads,archive,art}/<id>[-s].avif next to each .webp (about half the bytes; the site uses them when the
+# - media/{statics,archive,art}/<id>[-s].avif next to each .webp (about half the bytes; the site uses them when the
 #   browser can show AVIF, else the .webp)
 # - js/content/previews.js: per image a tiny blurred preview (data URI) and its average tone, shown under the photo
 #   until it has loaded, so no image is ever an empty box
@@ -23,7 +23,7 @@ def tiny(im):
 
 
 out, n_avif, web_b, avif_b = {}, 0, 0, 0
-for d in ("ads", "archive", "art"):
+for d in ("statics", "archive", "art"):
     for f in sorted((MEDIA / d).glob("*.webp")):
         a = f.with_suffix(".avif")
         if force or not a.exists() or a.stat().st_mtime < f.stat().st_mtime:
